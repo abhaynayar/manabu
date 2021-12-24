@@ -198,8 +198,6 @@ def optimize(w, b, X, Y, num_iterations=100, learning_rate=0.009, print_cost=Fal
 
         if i % 100 == 0:
             costs.append(cost)
-
-            # Print the cost every 100 training iterations
             if print_cost:
                 print ("Cost after iteration %i: %f" %(i, cost))
 
@@ -290,8 +288,66 @@ image = np.array(Image.open(fname).resize((num_px, num_px)))
 plt.imshow(image)
 image = image / 255.
 image = image.reshape((1, num_px * num_px * 3)).T
-my_predicted_image = predict(logistic_regression_model["w"], logistic_regression_model["b"], image)
-
-print("y = " + str(np.squeeze(my_predicted_image)) + ", your algorithm predicts a \"" + classes[int(np.squeeze(my_predicted_image)),].decode("utf-8") +  "\" picture.")
+my_predicted_image = predict(logistic_regression_model["w"],
+    logistic_regression_model["b"], image)
 ```
+
+## Neural network representation
+
+First neuron of first hidden layer:
+
+```
+z1[1] = np.dot(w1[1].T, x) + b1[1]
+```
+
+The entire first layer:
+
+```
+Z1 = np.dot(W1.T, X) + b1
+```
+
+Across multiple examples:
+
+```
+for i=1 to m:
+    z[1](i) = np.dot(w[1], x[1] + b[1])
+    a[1](i) = sigmoid(z[1](i))
+    z[2](i) = np.dot(w[2], a[1](i) + b[2])
+    a[2](i) = sigmoid(z[2](i)
+```
+
+Vectorized across multiple examples:
+
+```
+Z[1] = np.dot(W[1],X) + b[1]
+A[1] = sigmoid(Z[1])
+Z[2] = np.dot(W[2],A[1]) + b[2]
+A[2] = sigmoid(Z[2])
+```
+
+## Activation functions
+
+- Sigmoid is preferred for the output layer in binary classification.
+  (since it outputs between zero and one)
+- tanh: `a = (e**z - e**-z) / (e**z + e**-z)`
+- ReLU: `a = max(0,z)`
+- Leaky ReLU: `a = max(0.01*z, z)`
+
+
+## Why do we use non-linear activation functions?
+
+Linear activation functions: useless for hidden layers as the composition
+of two linear functions is still linear. So it becomes no different than
+the one neuron linear regression.
+
+You can still use a linear activation function in the output layer. But use
+non-linearities in the hidden layers.
+
+
+
+
+
+
+
+
 
