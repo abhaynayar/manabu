@@ -344,7 +344,14 @@ You can still use a linear activation function in the output layer. But use
 non-linearities in the hidden layers.
 
 
+## Derivatives of activation functions
 
+- Sigmoid: `a' = a*(1-a)`
+- Tanh: `a' = 1 - a**2`
+- ReLU: `g'(z) = {0 if z<0, 1 if z>0, undefine if z=0}`
+- Leaky ReLU: `g'(z) = {0.01 if z<0, 1 if z>=0}`
+
+## Gradient descent for neural networks
 
 
 
