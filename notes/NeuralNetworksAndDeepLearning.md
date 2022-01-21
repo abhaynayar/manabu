@@ -353,8 +353,48 @@ non-linearities in the hidden layers.
 
 ## Gradient descent for neural networks
 
+```
+TBD
+```
+
+----
+
+## Matrix dimensions
+
+Weights of a certain layer will have rows equal to neurons in that layer
+and columns equal to neurons in the previous layer.
+
+```
+W[l] = (n[l], n[l-1])
+```
+
+Bias vector of a certain layer will have rows equal to the number of
+neurons in that layer, and only one column.
+
+```
+b[l] = (n[l], 1)
+```
+
+When we vectorize across training examples, all the dimensions with one
+become the number of all training examples.
+
+## Forward and backward functions
+
+- In forward pass, cache Z,W,B values of all layers.
+- We are not storing the activations of anything anywhere. Do we have to?
 
 
+## Deep L-layer networks
 
-
-
+```
+def initialize_parameters(n_x, n_h, n_y): return parameters
+def initialize_parameters_deep(layer_dims): return parameters
+def linear_forward(A, W, b): return Z, cache
+def linear_activation_forward(A_prev, W, b, activation): return A, cache
+def L_model_forward(X, parameters): return AL, caches
+def compute_cost(AL, Y): return cost
+def linear_backward(dZ, cache): return dA_prev, dW, db
+def linear_activation_backward(dA, cache, activation): return dA_prev, dW, db
+def L_model_backward(AL, Y, caches): return grads
+def update_parameters(params, grads, learning_rate): return parameters
+```
