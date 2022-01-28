@@ -129,17 +129,18 @@ like what a human would do.
 For every word, we want to calculating how much attention should we be
 paying to every other word.
 
-## Implementation
+### Implementation
 
 Attention values are non-negative.
 Sum of all attentions will be 1.
 Context will be sum of attention\*activation.
 
-## How to compute attention weights
+### How to compute attention weights
 
 Take previous state s\<t-1\> and activation \<t'\> as inputs to a small
 neural network, and train it to get e\<t,t'\>. Then we get the attention
-values (denoted by alpha) through the e values and a formula.
+values (denoted by alpha) through the energies (e) and activations (a)
+inserted into a formula.
 
 ## Speech Recognition
 
@@ -157,4 +158,71 @@ CTC cost method:
 
 As soon as the audio finishes saying the trigger word, output labels 1's in
 the neural network.
+
+
+
+## Transformer Network
+### Intuition
+
+- Attention + CNN
+  - Self-attention
+  - Multi-head attention
+
+### Self-attention
+
+- A(q,K,V) = attention-based vector representation of a word.
+- Calculate A for each word.
+
+RNN attention:
+
+```py
+TBD
+```
+
+Transformer attention:
+
+```py
+A(q,K,V) = softmax(np.dot(Q,K.T)/np.sqrt(dk)) * V
+```
+
+- q=query, K=key, V=value.
+- To calculate A\<3\>:
+  - Compute the inner product between the q3 and the keys of all words.
+  - Then using those values, put them into the softmax given above.
+  - Then multiply output of that softmax with values of all words.
+  - Sum up all those outputs.
+  - You can write A\<3\> = A(q\<3\>, K, V)
+
+
+### Multi-head attention
+
+- Like a for loop over self-attention.
+- Each iteration will ask a different question.
+- However, we are still looping over the same word.
+- All the heads can be computed in parallel.
+
+
+## Transformer Network
+
+- Multi-head attention (Q,K,V) inside an encoder block.
+- Produces a matrix which can be passed into a feed forward neural network.
+- Repeat this encoder block N times. (N=6)
+- Feed output of this into a decoder block.
+- Decoder block takes target language sentence up till now and puts it into
+  a multi-head attention block. This block outputs Q.
+- We put the Q from before and K and V from encoder output into another
+  multi-head attention block. We then put this in a feed forward neural
+  network which outputs a prediction for the next word.
+- We take this next word and put this back into the input for the decoder
+  block as the translated sentence up till now.
+
+
+## Transformer details
+
+- Need positional encodings.
+- Some weird sin and cos waves into a vector.
+- Positional encoding is added to the input word vectors X.
+- Masked multi-head attention: used during training, blocks out last part
+  of the sentence.
+
 
